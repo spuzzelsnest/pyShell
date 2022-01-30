@@ -31,7 +31,7 @@ $file = "network-report.html"
 if(Test-path $list -PathType Leaf){
     $pcs = Get-Content $list
  }else{
-    Write-host "Server list file not found in Directory Logs/server.lst\n setting pc list to local pc"
+    Write-host "Server list file not found in Directory Logs/server.lst `nSetting pc list to local pc"
     $pcs = 127.0.0.1
 }
 
