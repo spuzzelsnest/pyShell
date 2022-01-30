@@ -2,26 +2,34 @@
 .synopsis 
 Create Server Status Report
 
-- user needs to fill file Logs/server.lst
+- user specifies the file containing a list of servers
 
 This Script will create a html file with the online status of a list of servers provided in file Logs/server.lst
 
 .Description
 This script collects the online status of a list of servers.
 
+.parameter list
+Specifies the locatoin of a file containing a line seperated list of computers or Ip adresses 
+
 .example
-./createReport.ps1
+./createReport.ps1 -list ./server.lst
 
 #>
+
+# Parameter Definition Section
+param(
+    [string]$list
+)
+
 
 # START VARS
 
 $dump = "Logs\"
-$list = "Logs\server.lst"
 $file = "network-report.html"
 
 if(Test-path $list -PathType Leaf){
-    $pcs = Get-Content Logs\server.lst
+    $pcs = Get-Content $list
  }else{
     Write-host "Server list file not found in Directory Logs/server.lst\n setting pc list to local pc"
     $pcs = 127.0.0.1
