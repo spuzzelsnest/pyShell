@@ -1,29 +1,40 @@
-#--------------------------------------------------------------------------------
-#
-# NAME:		pShell-Commander.ps1
-#
-# AUTHOR:	Spuzzelsnest
-#
-# COMMENT:
-#			Check status of services
-#
-#
-#       VERSION HISTORY:
-#       1.0     30.01.2022  - initial commit.
-#--------------------------------------------------------------------------------
+<#
+.synopsis 
+Create Server Status Report
+
+- user needs to fill file Logs/server.lst
+
+This Script will create a html file with the online status of a list of servers provided in file Logs/server.lst
+
+.Description
+This script collects the online status of a list of servers.
+
+.example
+./createReport.ps1
+
+#>
+
 # START VARS
 
-$pcs = Get-Content Logs\server.lst
 $dump = "Logs\"
+$list = "Logs\server.lst"
 $file = "network-report.html"
-$tot = ($pcs | Measure-Object -Line).lines
-$i = 1
- 
+
+if(Test-path $list -PathType Leaf){
+    $pcs = Get-Content Logs\server.lst
+ }else{
+    Write-host "Server list file not found in Directory Logs/server.lst\n setting pc list to local pc"
+    $pcs = 127.0.0.1
+}
+
 # Make backup 
 
 if (Test-Path $dump\$file){
     copy-item $dump\$file -destination $dump\$file-$(Get-Date -format "yyyy_MM_dd_hh_mm_ss")
 }
+
+$tot = ($pcs | Measure-Object -Line).lines
+$i = 1
 
 # Iterate Servers
 
